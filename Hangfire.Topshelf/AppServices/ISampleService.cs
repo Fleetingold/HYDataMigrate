@@ -11,10 +11,10 @@ namespace Hangfire.Topshelf.AppServices
 		/// simple job test
 		/// </summary>
 		/// <param name="context"></param>
-		[RecurringJob("0 4 1 * *")]
-		[AutomaticRetry(Attempts = 3)]
-		[DisplayName("SimpleJobTest")]
-		[Queue("jobs")]
+		//[RecurringJob("0 4 1 * *")]
+		//[AutomaticRetry(Attempts = 3)]
+		//[DisplayName("SimpleJobTest")]
+		//[Queue("jobs")]
 		void SimpleJob(PerformContext context);
 	}
 }
