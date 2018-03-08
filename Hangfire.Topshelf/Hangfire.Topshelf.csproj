@@ -66,4 +66,8 @@
     <Reference Include="System.Messaging" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

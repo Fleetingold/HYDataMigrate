@@ -64,11 +64,12 @@ namespace Hangfire.Topshelf.Core
 				.Where(t => typeof(IDependency).IsAssignableFrom(t) && t != typeof(IDependency) && !t.IsInterface)
 				.AsImplementedInterfaces();
 
-			//register speicified types here  
-			builder.Register(x => new RecurringJobService());
-			builder.Register(x => new MyJob1());
-			builder.Register(x => new MyJob2());
-			builder.Register(x => new LongRunningJob());
-		}
+            //register speicified types here
+
+            builder.Register(x => new RecurringJobService());
+            builder.Register(x => new MyJob1());
+            builder.Register(x => new MyJob2());
+            builder.Register(x => new LongRunningJob());
+        }
 	}
 }
