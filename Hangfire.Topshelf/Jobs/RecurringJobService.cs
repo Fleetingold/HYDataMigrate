@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Hangfire.Console;
 using Hangfire.RecurringJobExtensions;
 using Hangfire.Server;
+using Models;
+using SqlSugar;
 
 namespace Hangfire.Topshelf.Jobs
 {
@@ -23,5 +26,16 @@ namespace Hangfire.Topshelf.Jobs
 		{
 			context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} StaticTestJob Running ...");
 		}
+
+        [RecurringJob("*/1 * * * *")]
+        [DisplayName("TrySqlSugarJob")]
+        [Queue("jobs")]
+        public void TrySqlSugarJob(PerformContext context,SqlSugarClient db)
+        {
+            context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TrySqlSugarJob Running ...");
+            List<Base_AreaList> list =  db.Queryable<Base_AreaList>().ToList();
+            context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} GetBase_AreaList" + list.Count);
+            context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TrySqlSugarJob Running Over ...");
+        }
 	}
 }

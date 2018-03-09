@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.2" />
+    <PackageReference Include="sqlSugar" Version="4.6.4.7" />
     <PackageReference Include="Topshelf" Version="4.0.3" />
     <PackageReference Include="Autofac" Version="4.2.1" />
     <PackageReference Include="Autofac.WebApi2" Version="4.0.1" />
@@ -69,5 +70,7 @@
   <ItemGroup>
     <Folder Include="logs\" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
