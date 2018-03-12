@@ -61,8 +61,26 @@ namespace Hangfire.Topshelf
 		/// </summary>
 		public string HangfireRedisConnectionString => Configuration.GetConnectionString("hangfire.redis");
 
-        public string SqlSugarSqlserverConnectionString => Configuration.GetConnectionString("sqlsugar.sqlserver");
+        /// <summary>
+		///  SqlSugar sql server connectionstring
+		/// </summary>
+        public string SqlSugarSqlserverOilStationDBConnectionString => Configuration.GetConnectionString("sqlsugar.sqlserver.OilStationDB");
 
+        /// <summary>
+		///  SqlSugar oracle server connectionstring
+		/// </summary>
         public string SqlSugarOracleConnectionString => Configuration.GetConnectionString("");
+
+        #region 尝试没1分钟从HYERPBusiness10.AreaList复制数据到HYERPBusiness.AreaList
+        /// <summary>
+		///  SqlSugar sql server HYERPBusiness connectionstring
+		/// </summary>
+        public string SqlSugarSqlserverHYERPBusinessConnectionString => Configuration.GetConnectionString("sqlsugar.sqlserver.HYERPBusiness");
+
+        /// <summary>
+		///  SqlSugar sql server HYERPBusiness10 connectionstring
+		/// </summary>
+        public string SqlSugarSqlserverHYERPBusiness10ConnectionString => Configuration.GetConnectionString("sqlsugar.sqlserver.HYERPBusiness10");
+        #endregion
     }
 }

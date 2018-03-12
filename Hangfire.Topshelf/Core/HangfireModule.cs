@@ -67,18 +67,24 @@ namespace Hangfire.Topshelf.Core
 				.AsImplementedInterfaces();
 
             //register speicified types here
+            builder.Register(x => new RecurringJobService() {
+                SourceDB = new SqlSugarClient(new ConnectionConfig()
+                {
+                    ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverHYERPBusiness10ConnectionString, //必填
+                    DbType = DbType.SqlServer, //必填
+                    IsAutoCloseConnection = true
+                }),
+                TargetDB = new SqlSugarClient(new ConnectionConfig()
+                {
+                    ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverHYERPBusinessConnectionString, //必填
+                    DbType = DbType.SqlServer, //必填
+                    IsAutoCloseConnection = true
+                })
 
-            builder.Register(x => new RecurringJobService()).PropertiesAutowired();
+            });
             builder.Register(x => new MyJob1());
             builder.Register(x => new MyJob2());
             builder.Register(x => new LongRunningJob());
-            builder.Register(x => new SqlSugarClient(new ConnectionConfig()
-            {
-                ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverConnectionString, //必填
-                //ConnectionString = ConfigurationManager.ConnectionStrings["DbAreaList"].ConnectionString.ToString(), //必填
-                DbType = DbType.SqlServer, //必填
-                IsAutoCloseConnection = true
-            })).SingleInstance();
             builder.RegisterType<Base_AreaList>();
         }
     }
