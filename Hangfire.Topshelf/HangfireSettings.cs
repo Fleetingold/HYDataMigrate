@@ -60,5 +60,9 @@ namespace Hangfire.Topshelf
 		///  Hangfire redis server connectionstring
 		/// </summary>
 		public string HangfireRedisConnectionString => Configuration.GetConnectionString("hangfire.redis");
-	}
+
+        public string SqlSugarSqlserverConnectionString => Configuration.GetConnectionString("sqlsugar.sqlserver");
+
+        public string SqlSugarOracleConnectionString => Configuration.GetConnectionString("");
+    }
 }

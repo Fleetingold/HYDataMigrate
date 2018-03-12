@@ -6,6 +6,7 @@ using Hangfire.Topshelf.Jobs;
 using Hangfire.Samples.Framework;
 using Hangfire.Samples.Framework.Logging;
 using SqlSugar;
+using Models;
 
 namespace Hangfire.Topshelf.Core
 {
@@ -67,17 +68,18 @@ namespace Hangfire.Topshelf.Core
 
             //register speicified types here
 
-            builder.Register(x => new RecurringJobService());
+            builder.Register(x => new RecurringJobService()).PropertiesAutowired();
             builder.Register(x => new MyJob1());
             builder.Register(x => new MyJob2());
             builder.Register(x => new LongRunningJob());
             builder.Register(x => new SqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = HangfireSettings.Instance.HangfireSqlserverConnectionString, //必填
+                ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverConnectionString, //必填
                 //ConnectionString = ConfigurationManager.ConnectionStrings["DbAreaList"].ConnectionString.ToString(), //必填
                 DbType = DbType.SqlServer, //必填
                 IsAutoCloseConnection = true
-            }));
+            })).SingleInstance();
+            builder.RegisterType<Base_AreaList>();
         }
-	}
+    }
 }

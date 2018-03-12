@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hangfire.Samples.Framework;
+using System;
 using System.Linq;
 using System.Text;
 
