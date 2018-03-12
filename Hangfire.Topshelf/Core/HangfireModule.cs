@@ -80,12 +80,35 @@ namespace Hangfire.Topshelf.Core
                     DbType = DbType.SqlServer, //必填
                     IsAutoCloseConnection = true
                 })
-
-            });
+            }).SingleInstance();
             builder.Register(x => new MyJob1());
             builder.Register(x => new MyJob2());
             builder.Register(x => new LongRunningJob());
             builder.RegisterType<Base_AreaList>();
+
+            // createModel
+            //CreateModel();
+        }
+
+        private void CreateModel() {
+            SqlSugarClient TargetSqlSugarClient = new SqlSugarClient(new ConnectionConfig()
+            {
+                ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverHYERPBusinessConnectionString, //必填
+                DbType = DbType.SqlServer, //必填
+                IsAutoCloseConnection = true
+            });
+
+            //TargetSqlSugarClient.DbFirst.Where("AreaList").CreateClassFile(@"C:\Users\HYKJ8\source\repos\HYDataMigrate\Hangfire.Topshelf\DataModel");
+            TargetSqlSugarClient.DbFirst.Where("FinaSettlement").CreateClassFile(@"C:\Users\HYKJ8\source\repos\HYDataMigrate\Hangfire.Topshelf\DataModel");
+
+            //SqlSugarClient SourceSqlSugarClient = new SqlSugarClient(new ConnectionConfig()
+            //{
+            //    ConnectionString = HangfireSettings.Instance.SqlSugarSqlserverHYERPBusiness10ConnectionString, //必填
+            //    DbType = DbType.SqlServer, //必填
+            //    IsAutoCloseConnection = true
+            //});
+
+            //SourceSqlSugarClient.DbFirst.Where("FinaSettlement").CreateClassFile(@"C:\Users\HYKJ8\source\repos\HYDataMigrate\Hangfire.Topshelf\DataModel");
         }
     }
 }
