@@ -6,6 +6,7 @@ using Hangfire.Server;
 using Models;
 using SqlSugar;
 using Autofac;
+using System.Linq;
 
 namespace Hangfire.Topshelf.Jobs
 {
@@ -25,30 +26,6 @@ namespace Hangfire.Topshelf.Jobs
         /// 目标数据库SqlSugarClient
         /// </summary>
         public SqlSugarClient TargetDB { get; set; }
-
-        //[RecurringJob("*/1 * * * *")]
-        //[DisplayName("InstanceTestJob")]
-        //[Queue("jobs")]
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        public void InstanceTestJob(PerformContext context)
-		{
-			context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} InstanceTestJob Running ...");
-		}
-
-		//[RecurringJob("*/5 * * * *")]
-		//[DisplayName("JobStaticTest")]
-		//[Queue("jobs")]
-		/// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        public static void StaticTestJob(PerformContext context)
-		{
-			context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} StaticTestJob Running ...");
-		}
 
         //[RecurringJob("*/1 * * * *")]
         //[System.ComponentModel.DisplayName("TrySqlSugarJob")]
@@ -93,7 +70,7 @@ namespace Hangfire.Topshelf.Jobs
         /// </summary>
         /// <param name="context"></param>
         /// [RecurringJob("0 9-18 ? * MON-FRI")]
-        [RecurringJob("0/59 9-18 * * MON-FRI")]
+        [RecurringJob("0 9-18 * * *", "China Standard Time", "jobs")]
         [System.ComponentModel.DisplayName("RecordDataMigrateJob")]
         [Queue("jobs")]
         public void RecordDataMigrateJob(PerformContext context)
@@ -102,7 +79,6 @@ namespace Hangfire.Topshelf.Jobs
 
             // 从SourceDB查询出符合条件的FinaSettlementlist
             var finaSettlement10s = SourceDB.Queryable<Models.SourceDB.FinaSettlement>().Where(it => SqlFunc.Between(it.CreateDate, DateTime.Now.AddHours(-1), DateTime.Now)).ToList();
-            //var finaSettlement10s = SourceDB.Queryable<Models.SourceDB.FinaSettlement>().ToList();
             context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} RecordDataMigrateJob 查询SourceDB.AreaList 个数为" + finaSettlement10s.Count.ToString());
 
             if (finaSettlement10s.Count == 0)
@@ -111,12 +87,7 @@ namespace Hangfire.Topshelf.Jobs
             }
             else
             {
-                // runningTimes怎么用？
-                var runningTimes = context.GetJobData<int>("RunningTimes");
-                context.WriteLine($"get job data parameter-> RunningTimes: {runningTimes}");
-
                 var progressBar = context.WriteProgressBar();
-                //List<Models.TargetDB.FinaSettlement> finaSettlements = new List<Models.TargetDB.FinaSettlement>();
                 var insertConnt = 0;
                 foreach (Models.SourceDB.FinaSettlement item in finaSettlement10s.WithProgress(progressBar))
                 {
@@ -142,12 +113,10 @@ namespace Hangfire.Topshelf.Jobs
                     targetItem.Remark = item.Remark;
                     targetItem.FundContent = "0.0";
                     // 为什么一个一个插入都不行？
-                    TargetDB.Insertable(targetItem).ExecuteCommand();
-                    insertConnt++;
-                    //finaSettlements.Add(targetItem);
+                    int insert = TargetDB.Insertable(targetItem).ExecuteCommand();
+                    insertConnt+=insert;
                 }
 
-                //var insertConnt = TargetDB.Insertable(finaSettlements.ToArray()).ExecuteCommand();
                 context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} RecordDataMigrateJob 插入TargetDB.AreaList 个数为" + insertConnt);
             }
             context.WriteLine($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} TrySqlSugarJob Running Over ...");

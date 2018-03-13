@@ -20,12 +20,12 @@
 	//		}
 	//	}
 	//},
-	//{
-	//	"job-name": "Long Running Job",
-	//	"job-type": "Hangfire.Topshelf.Jobs.LongRunningJob, Hangfire.Topshelf",
-	//	"cron-expression": "*/2 * * * *",
-	//	"job-data": {
-	//		"RunningTimes": 300
-	//	}
-	//}
+	{
+		"job-name": "Long Running Job",
+		"job-type": "Hangfire.Topshelf.Jobs.LongRunningJob, Hangfire.Topshelf",
+		"cron-expression": "*/2 * * * *",
+		"job-data": {
+			"RunningTimes": 300
+		}
+	}
 ]

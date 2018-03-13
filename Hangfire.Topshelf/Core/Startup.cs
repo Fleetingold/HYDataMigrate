@@ -77,11 +77,13 @@ namespace Hangfire.Topshelf.Core
 
 			app.UseDashboardMetric();
 
-			app.UseRecurringJob(typeof(RecurringJobService));
+            //using RecurringJobAttribute to build RecurringJob automatically.
+            app.UseRecurringJob(typeof(RecurringJobService));
 
 			app.UseRecurringJob(container);
 
-			app.UseRecurringJob("recurringjob.json");
+            //using json config file to build RecurringJob automatically.
+            app.UseRecurringJob("recurringjob.json");
 		}
 
 	}
